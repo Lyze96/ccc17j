@@ -1,28 +1,46 @@
-d = int(input())
+def findlength(height, data = []):
 
-result = int(d/720)*31
-d = d % 720
+    a = 1
+    b = height-1
 
-time = 0
-while time <= d:
+    length = 0
 
-    if int(time / 60) % 12 == 0:
-        hour1 = 1
-        hour2 = 2
-    else:
-        hour1 = int(((time / 60) % 12) / 10)
-        hour2 = int(((time / 60) % 12) % 10)
+    while a <= b:
+        if a == b:
+            num = int(data[a]/2)
+            length += num
+        elif data[a] > 0 and data[b] > 0:
+            num = min(data[a], data[b])
+            length += num
 
-    min1 = int((time % 60) / 10)
-    min2 = int((time % 60) % 10)
+        a += 1
+        b -= 1
 
-    for i in range(-4, 5):
-        if hour1 == 0 and min1 == hour2+i and min2 == hour2+(2 * i):
-            result += 1
-        if hour1 == 1 and hour2 == hour1+i and min1 == hour1+(2 * i) and min2 == hour1+(3 * i):
-            result += 1
-
-    time += 1
+    return length
 
 
-print(result)
+boards = int(input())
+datastr = input().split()
+data = []
+
+for i in range(4001):
+    data.append(0)
+
+for d in datastr:
+    data[int(d)] += 1
+
+maxlength = 0
+ways = 0
+
+for h in range(2, 4001):
+
+    length = findlength(h, data)
+
+    if length > maxlength:
+        maxlength = length
+        ways = 0
+
+    if length > 0 and length == maxlength:
+        ways += 1
+
+print(maxlength, ways)
